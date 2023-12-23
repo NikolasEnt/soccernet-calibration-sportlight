@@ -2,16 +2,14 @@
 
 The repository contains the 1st place solution for SoccerNet Camera Calibration 2023, one of the challenges held at CVPR 2023.
 
-Technical details of the approach are available in [Top-1 solution of SoccerNet Camera Calibration Challenge 2023](https://nikolasent.github.io/deeplearning/computervision/2023/06/20/SoccerNet-Camera-Calibration-2023.html).
+Technical details of the approach are available in [Top-1 solution of SoccerNet Camera Calibration Challenge 2023](https://nikolasent.github.io/deeplearning/computervision/2023/06/20/SoccerNet-Camera-Calibration-2023.html). A brief video presentation of the solution is available on [YouTube](https://www.youtube.com/watch?v=bP72jfyecrw).
 
 The solution was developed by Sportlight Technology team: [Nikolay Falaleev](https://github.com/NikolasEnt) and [Ruilong Chen](https://github.com/ruilongml).
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/bP72jfyecrw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Quick start guide
 
 The environment is provided as a Docker image, built it with `make build`. Use `make run` commamd to start the container.
-
 
 
 ## Project structure
