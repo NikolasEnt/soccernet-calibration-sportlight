@@ -27,7 +27,7 @@ run:
 	docker run --rm -it $(GPUS) \
 		$(NET) $(IPC) \
 		-v $(shell pwd):/workdir/ \
-		$(CONTAINER_NAME)_s\
+		$(CONTAINER_NAME)\
 		$(IMAGE_NAME) \
 		bash
 
