@@ -1,0 +1,58 @@
+---
+defaults:
+  - _self_
+  - model_config/hrnet_w48@model.params.nn_module.hrnet_config
+
+metadata:
+  experiment_name: HRNet_57
+  run_name: HRNet_57_57_hrnet48x2_57_003_voter
+  description: Run optuna hyperparams optimization on the best model so far
+  experimenter: Optuna
+  location: fractal
+data_params:
+  input_size: [960, 540]
+  num_keypoints: 57
+  batch_size: 8
+  num_workers: 8
+  pin_memory: true
+  margin: ${model.params.loss.sigma}
+data:
+  val:
+    - /workdir/data/dataset/valid
+model:
+  _target_: src.models.hrnet.metamodel.HRNetMetaModel
+  params:
+    device: cuda:0
+    nn_module:
+      num_refinement_stages: 0
+      num_heatmaps: ${model.params.nn_module.hrnet_config.num_classes}
+    loss:
+      num_refinement_stages: ${model.params.nn_module.num_refinement_stages}
+      stride: 2
+      sigma: 2.0
+      pred_size: [270, 480]
+      num_keypoints: ${data_params.num_keypoints}
+    optimizer:
+      lr: 0.0001
+    prediction_transform:
+      size: [540, 960]
+    amp: True
+    pretrain: # TODO: path to a trained model for validation
+train_params:
+  load_compatible: true # Load only compatible weights from pretrain
+  use_compile: false
+camera:
+  _target_: src.models.hrnet.prediction.CameraCreator
+  lines_file: null #"/workdir/data/lines/result_on_valid_set4.pkl"
+  pitch:
+    _target_: src.datatools.ellipse.get_pitch
+  conf_threshs: [0.5, 0.35, 0.2] # Min confidence to consider the point detected
+  conf_thresh: 0.5
+  algorithm: "iterative_voter"
+  min_points: 5
+  min_focal_length: 10.0
+  min_points_per_plane: 6
+  min_points_for_refinement: 6
+  reliable_thresh: 57
+  max_rmse: 55.0
+  max_rmse_rel: 5.0

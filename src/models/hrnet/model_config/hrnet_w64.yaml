@@ -1,0 +1,31 @@
+num_classes: 58
+stem_width: 64
+final_conv_kernel: 1
+internal_final_conv: 0
+upscale: 2
+# Dowloaded from links on https://github.com/HRNet/HRNet-Semantic-Segmentation/blob/HRNet-OCR/lib/models/hrnet.py can be null
+pretrain: "" #/workdir/data/pretrain/hrnetv2_w48_imagenet_pretrained.pth
+stage1:
+  num_modules: 1
+  num_branches: 1
+  block_type: BOTTLENECK
+  num_blocks: [4]
+  num_channels: [64]
+stage2:
+  num_modules: 1
+  num_branches: 2
+  block_type: BASIC
+  num_blocks: [4, 4]
+  num_channels: [64, 128]
+stage3:
+  num_modules: 4
+  num_branches: 3
+  block_type: BASIC
+  num_blocks: [4, 4, 4]
+  num_channels: [64, 128, 256]
+stage4:
+  num_modules: 3
+  num_branches: 4
+  block_type: BASIC
+  num_blocks: [4, 4, 4, 4]
+  num_channels: [64, 128, 256, 512]
