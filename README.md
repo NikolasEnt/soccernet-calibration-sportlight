@@ -2,14 +2,22 @@
 
 The repository contains the 1st place solution for SoccerNet Camera Calibration 2023, one of the challenges held at CVPR 2023.
 
+![An image and predictions visualization overlayed](readme_img/image_and_predictions.jpg)
+
 Technical details of the approach are available in [Top-1 solution of SoccerNet Camera Calibration Challenge 2023](https://nikolasent.github.io/deeplearning/computervision/2023/06/20/SoccerNet-Camera-Calibration-2023.html). A brief video presentation of the solution is available on [YouTube](https://www.youtube.com/watch?v=bP72jfyecrw).
 
 The solution was developed by Sportlight Technology team: [Nikolay Falaleev](https://github.com/NikolasEnt) and [Ruilong Chen](https://github.com/ruilongml).
 
+## Prerequirements
+
+* Linux computer with Nvidia GPU. The code was tested on OpenSUSE 15.5 and Ubuntu 22.04.
+* NVidia GPU with at least 24GB of memory. Nvidia RTX 3090 and RTX 4090 GPUs were used during the challenge. NVIDIA Driver v.>= 535.
+* [Docker](https://docs.docker.com/engine/install/) and [NVIDIA Container Toolkit](nvidia docker).
+
 
 ## Quick start guide
 
-The environment is provided as a Docker image, built it with `make build`. Use `make run` commamd to start the container.
+The environment is provided as a Docker image; build it with `make build`. To start the container, use the command `make run`. All the following commands, describing how to train models or make predictions, should be executed within the docker container.
 
 
 ## Project structure
@@ -25,6 +33,8 @@ The environment is provided as a Docker image, built it with `make build`. Use `
 
 The HRNet based model code is in [src/models/hrnet/](src/models/hrnet). The model training is configured by Hydra config file [src/models/hrnet/train_config.yaml](src/models/hrnet/train_config.yaml). Run `python src/models/hrnet/train.py` to train the model in the docker container environment.
 
+Details on the model architecture are in the model [README.md](/src/models/hrnet/README.md).
+
 ### Optimize prediction model hyperparameters
 
 In order to run the hyperparameter search with Optuna:
@@ -37,4 +47,4 @@ In order to run the hyperparameter search with Optuna:
 * [https://github.com/SoccerNet/sn-calibration](https://github.com/SoccerNet/sn-calibration) Challenge discription and the baseline.
 * [https://www.soccer-net.org/tasks/camera-calibration](https://www.soccer-net.org/tasks/camera-calibration) Challenge homepage.
 * [https://arxiv.org/abs/2309.06006](https://arxiv.org/abs/2309.06006) Soccernet 2023 results report.
-* [Evaluation server](https://eval.ai/web/challenges/challenge-page/1946/overview)
+* [Evaluation server](https://eval.ai/web/challenges/challenge-page/1946/overview).
