@@ -8,6 +8,8 @@ from src.datatools.geom import point_within_img
 from src.datatools.line import find_closest_points
 from src.datatools.ellipse import add_conic_points
 
+EPS = 1e-18
+
 LINE_INTERSECTIONS: Dict[int, Tuple[str, str]] = {
     0: ('Goal left crossbar', 'Goal left post left '),
     1: ('Goal left crossbar', 'Goal left post right'),
@@ -62,8 +64,7 @@ def intersection(line1_arr: np.ndarray, line2_arr: np.ndarray)\
 
     Returns:
         Optional[Tuple[float, float]]: Intersection point. Note: the
-            intersection point can be beyond the image. It will be returned if
-            within_image=False, otherwise None is returned.
+            intersection point can be beyond the image.
     """
 
     x1, y1 = line1_arr[:, 0], line1_arr[:, 1]
@@ -73,36 +74,30 @@ def intersection(line1_arr: np.ndarray, line2_arr: np.ndarray)\
     is_x1_line = np.all(np.isclose(x1, x1_mean, atol=0.5))
     is_x2_line = np.all(np.isclose(x2, x2_mean, atol=0.5))
     point = None
-    if is_x1_line:
+    if is_x1_line:  # Deal with the case when the line1 is close to x=consts
         x = x1_mean
         if is_x2_line:
             return None
         b2, a2 = P.polyfit(x2, y2, 1)
         y = a2 * x + b2
-        point = (x, y)
-        if line1_arr.shape[0] > 2 or line2_arr.shape[0] > 2:
-            line1_arr = find_closest_points(line1_arr, x, y, True)
-            line2_arr = find_closest_points(line2_arr, x, y, True)
-            point = intersection(line1_arr, line2_arr)
-    elif is_x2_line:
+    elif is_x2_line:  # Deal with the case when the line2 is close to x=consts
         x = x2_mean
         b1, a1 = P.polyfit(x1, y1, 1)
         y = a1 * x + b1
-        point = (x, y)
-        if line1_arr.shape[0] > 2 or line2_arr.shape[0] > 2:
-            line1_arr = find_closest_points(line1_arr, x, y, True)
-            line2_arr = find_closest_points(line2_arr, x, y, True)
-            point = intersection(line1_arr, line2_arr)
-    else:
+    else:  # Find lines intersecion as intersection of fitted lines
         b1, a1 = P.polyfit(x1, y1, 1)
         b2, a2 = P.polyfit(x2, y2, 1)
-        x = (b2 - b1) / (a1 - a2 + 1e-18)
+        x = (b2 - b1) / (a1 - a2 + EPS)  # Numerical stable division
         y = a1 * x + b1
+    if line1_arr.shape[0] > 2 or line2_arr.shape[0] > 2:
+        # Recursiver application of the function. It is applied in hope the
+        # points closer to the intersection point can represent actual
+        # intesection point better (the idea was approved for the dataset).
+        line1_arr = find_closest_points(line1_arr, x, y, True)
+        line2_arr = find_closest_points(line2_arr, x, y, True)
+        point = intersection(line1_arr, line2_arr)
+    else:
         point = (x, y)
-        if line1_arr.shape[0] > 2 or line2_arr.shape[0] > 2:
-            line1_arr = find_closest_points(line1_arr, x, y, True)
-            line2_arr = find_closest_points(line2_arr, x, y, True)
-            point = intersection(line1_arr, line2_arr)
     return point
 
 
@@ -116,6 +111,8 @@ def get_intersections(points: Dict[str, List[Tuple[float, float]]],
         res[i] = None
         if pair[0] in points and pair[1] in points:
             if len(points[pair[0]]) > 1 and len(points[pair[1]]) > 1:
+                # Find intersections and keep only the intersections withing
+                # the given margins of the image.
                 res[i] = point_within_img(intersection(
                     np.array(points[pair[0]]) * img_size,
                     np.array(points[pair[1]]) * img_size), img_size,

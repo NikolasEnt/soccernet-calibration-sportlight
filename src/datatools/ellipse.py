@@ -1,4 +1,8 @@
+"""Functions for ellipses geometry operations.
 
+Ellipses are assumed to be defined by a*x^2+b*x*y+c*y^2+d*x+e*y+f=0,
+lines: k*x+h=y.
+"""
 import warnings
 from typing import Dict, List, Tuple
 
@@ -182,12 +186,14 @@ POINTS_LEFT: List[int] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 31, 33,
 POINTS_RIGHT: List[int] = [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
                            29, 30, 32, 34, 36, 38, 50, 51, 52, 53, 54, 55, 56]
 
-
+# Points, which are not on the playground (the crossbars)
 NOT_ON_PLANE = [0, 1, 24, 25]
 
 PITCH_POINTS_TO_INTERSECTON = {v: k for k, v
                                in INTERSECTON_TO_PITCH_POINTS.items()}
 
+# Info on all the conic points (tangent points and intersections between the
+# ellipses and lines)
 CONICS_KEYS = {
     'Circle central': {
         'CENTER_CIRCLE_TANGENT_TR': {
@@ -269,18 +275,20 @@ CONICS_KEYS = {
 
 
 def get_m(a, b, c, d, e, f, x0, y0) -> Tuple[float, float]:
+    """Helper function for getting the tangent points."""
     A = 4*a*c*x0*y0 + 2*a*e*x0 - b**2*x0*y0 - b*d*x0 - b*e*y0 - 2*b*f\
         + 2*c*d*y0 + d*e
     B = 2*np.sqrt((-4*a*c*f + a*e**2 + b**2*f - b*d*e + c*d**2)
                   * (a*x0**2 + b*x0*y0 + c*y0**2 + d*x0 + e*y0 + f))
     C = 4*a*c*x0**2 - b**2*x0**2 - 2*b*e*x0 + 4*c*d*x0 + 4*c*f - e**2
-    return ((A - B)/C, (A + B)/C)
+    return ((A - B) / C, (A + B) / C)
 
 
-def get_x(a, b, c, d, e, f, m, x0, y0):
+def get_x(a, b, c, d, e, m, x0, y0):
+    """Helper function for getting the tangent points."""
     C = 2 * (a + b*m + c*m**2)
     A = (b*m*x0 - b*y0 + 2*c*m**2*x0 - 2*c*m*y0 - d - e*m)
-    return A/C
+    return A / C
 
 
 def find_tangent_point(ellipse: List[float], point: Tuple[float, float],
@@ -300,7 +308,7 @@ def find_tangent_point(ellipse: List[float], point: Tuple[float, float],
     a, b, c, d, e, f = ellipse
     x0, y0 = point
     m = get_m(a, b, c, d, e, f, x0, y0)
-    x = get_x(a, b, c, d, e, f, m[idx], x0, y0)
+    x = get_x(a, b, c, d, e, m[idx], x0, y0)
     y = m[idx]*x+y0-m[idx]*x0
     return (x, y)
 
@@ -359,7 +367,7 @@ def add_conic_points(points: Dict[str, List[Tuple[float, float]]],
                                      or intersections[idx] is None):
                         world_p = PITCH_POINTS[INTERSECTON_TO_PITCH_POINTS[idx]]
                         img_p = hom @ np.array([world_p[0], world_p[1], 1])
-                        intersections[idx] = img_p[:2]/img_p[2]
+                        intersections[idx] = img_p[:2] / img_p[2]
                 filled_with_homography = True
         except:
             warnings.warn('Unable to create homography')
@@ -473,7 +481,7 @@ def get_homography(src, dst, threshold: float = 5.0):
 
 def quadratic_linear_intersection(a, b, c, d, e, f, k, h)\
         -> Tuple[List[float], List[float]]:
-    """Find intersections of a*x^2+b*x*y+c*y^2+d*x+e*y+f=0 and k*x+h=y
+    """Find intersections of a*x^2+b*x*y+c*y^2+d*x+e*y+f=0 and k*x+h=y.
     """
     def y(x):
         return k*x+h
