@@ -51,7 +51,7 @@ The model training is configured by Hydra config file
 Run `python src/models/line/train.py` to train the model in the docker 
 container environment.
 
-Details on the model architecture are in the model [README.md](/src/models/hrnet/README.md).
+Details on the model architecture are in the model [README.md](/src/models/line/README.md).
 
 ## Useful links
 
