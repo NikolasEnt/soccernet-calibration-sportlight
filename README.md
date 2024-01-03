@@ -42,6 +42,17 @@ In order to run the hyperparameter search with Optuna:
 2. Set initial guess and default values for the camera calibration heuristical algorithm in [src/models/hrnet/val_config.yaml](src/models/hrnet/val_config.yaml) `camera` section. Specify parameters seach space in [src/models/hrnet/optimize_valid.yaml](src/models/hrnet/optimize_valid.yaml) in `hydra.sweeper.params` (see Hydra [docs](https://hydra.cc/docs/plugins/optuna_sweeper/) for details on the sweeper configuratiuon). The provided parameters in the files represent the actual final used values during the course of experiments for the Challenge.
 3. Run optimization: `cd src/models/hrnet/` and `python validate.py --config-name optimize_valid --multirun`.
 
+
+## Line model
+
+The Line detection based model code is in [src/models/line/](src/models/line). 
+The model training is configured by Hydra config file 
+[src/models/line/train_config.yaml](src/models/hrnet/train_config.yaml). 
+Run `python src/models/line/train.py` to train the model in the docker 
+container environment.
+
+Details on the model architecture are in the model [README.md](/src/models/hrnet/README.md).
+
 ## Useful links
 
 * [https://github.com/SoccerNet/sn-calibration](https://github.com/SoccerNet/sn-calibration) Challenge discription and the baseline.
