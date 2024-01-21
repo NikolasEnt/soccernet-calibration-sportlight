@@ -1,12 +1,13 @@
 ## SoccerNet Camera Callibration 2023
 
-The repository contains the 1st place solution for SoccerNet Camera Calibration 2023, one of the challenges held at CVPR 2023.
+The repository contains the 1st place solution for SoccerNet Camera Calibration 2023, which was a part of CVPR 2023.
+
+The solution was developed by Sportlight Technology team: [Nikolay Falaleev](https://github.com/NikolasEnt) and [Ruilong Chen](https://github.com/ruilongml).
 
 ![An image and predictions visualization overlayed](readme_img/image_and_predictions.jpg)
 
 Technical details of the approach are available in [Top-1 solution of SoccerNet Camera Calibration Challenge 2023](https://nikolasent.github.io/deeplearning/computervision/2023/06/20/SoccerNet-Camera-Calibration-2023.html). A brief video presentation of the solution is available on [YouTube](https://www.youtube.com/watch?v=bP72jfyecrw).
 
-The solution was developed by Sportlight Technology team: [Nikolay Falaleev](https://github.com/NikolasEnt) and [Ruilong Chen](https://github.com/ruilongml).
 
 ## Prerequirements
 
@@ -23,7 +24,7 @@ The environment is provided as a Docker image; build it with `make build`. To st
 ## Project structure
 
 * `src` - The project's source directory.
-* `notebooks` - Jupyter notebooks. It contains a notebook with the annotatio exploration and a notebook with ellipses geometry-related algoriths visualization.
+* `notebooks` - Jupyter notebooks. It contains a notebook with the annotatio exploration and a notebook with ellipses geometry-related algorithms visualization.
 * `data` - The project's storage for required files.
   * `data/experiments/` - Folder with individual experiments results and artifacts (each experiment has its individual folder in this location).
   * `data/dataset/` - Folder with `challenge`, `test`, `train` and `valid` data from the challenge organizers. Use the official [development kit](https://github.com/SoccerNet/sn-calibration) to get the datasets.
