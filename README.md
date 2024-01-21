@@ -11,7 +11,7 @@ The solution was developed by Sportlight Technology team: [Nikolay Falaleev](htt
 ## Prerequirements
 
 * Linux computer with Nvidia GPU. The code was tested on OpenSUSE 15.5 and Ubuntu 22.04.
-* NVidia GPU with at least 24GB of memory. Nvidia RTX 3090 and RTX 4090 GPUs were used during the challenge. NVIDIA Driver v.>= 535.
+* NVidia GPU with at least 24GB of memory. Nvidia RTX 3090 and RTX 4090 GPUs were used during the challenge. NVIDIA Driver version >= 535.
 * [Docker](https://docs.docker.com/engine/install/) and [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
 
@@ -23,7 +23,7 @@ The environment is provided as a Docker image; build it with `make build`. To st
 ## Project structure
 
 * `src` - The project's source directory.
-* `notebooks` - Jupyter notebooks.
+* `notebooks` - Jupyter notebooks. It contains a notebook with the annotatio exploration and a notebook with ellipses geometry-related algoriths visualization.
 * `data` - The project's storage for required files.
   * `data/experiments/` - Folder with individual experiments results and artifacts (each experiment has its individual folder in this location).
   * `data/dataset/` - Folder with `challenge`, `test`, `train` and `valid` data from the challenge organizers. Use the official [development kit](https://github.com/SoccerNet/sn-calibration) to get the datasets.
@@ -58,7 +58,7 @@ Once the model is trained, prediction file should be prepared as described in [R
 ## Final predictions and submit file creation
 
 The final step is the submit file preparation. It can be created by a provided script: `python src/utils/make_submit.py`.
-Update paths to acual model files in the accordingly. The file contains heuristics params used for the actual winning submission.
+Update paths to actual model files in the accordingly. The file contains heuristics params used in the actual winning submission.
 
 In fact, actual calibration algorithms and relevant heuristics are implemented in [src/models/hrnet/prediction.py](src/models/hrnet/prediction.py).
 
