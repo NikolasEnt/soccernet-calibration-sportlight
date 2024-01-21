@@ -32,8 +32,6 @@ def circle_tangent_points(circle_center: Tuple[float, float],
                       circle_center[1] + radius * np.sin(d2), 0), dtype=float))
 
 
-PITCH_POINTS = {**SoccerPitch().point_dict}
-
 top_tanget = circle_tangent_points(
     PITCH_POINTS['CENTER_MARK'][:2], pitch.CENTER_CIRCLE_RADIUS,
     PITCH_POINTS['T_TOUCH_AND_HALFWAY_LINES_INTERSECTION'][:2])
@@ -416,6 +414,15 @@ def select_intersect(res, points: Dict[str, List[Tuple[float, float]]],
 
 
 def ellipse_line_intersect(ellipse, line: np.ndarray) -> np.ndarray | None:
+    """Find intersection of a line and an ellipse.
+
+    Args:
+        ellipse (Tuple[float]): Six coefficients of the ellipse.
+        line (np.ndarray): Line coefficients.
+
+    Returns:
+        np.ndarray | None: The intersection point if exists, None - otherwise.
+    """
     conic_coeffs = ellipse
     res = None
     if len(conic_coeffs) == 6:

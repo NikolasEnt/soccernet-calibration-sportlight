@@ -13,6 +13,8 @@ from src.datatools.ellipse import POINTS_LEFT, PITCH_POINTS, POINTS_RIGHT, \
 from src.datatools.intersections import LINE_INTERSECTIONS
 
 top_gates = [0, 1, 24, 25]  # Points above the ground plane
+
+# Points planes
 point_sets = {
     'groundplane': [i for i in range(58) if i not in top_gates],
     'goal_left': [0, 1, 2, 3, 6, 7, 10, 11, 12, 13],
@@ -20,7 +22,7 @@ point_sets = {
 
 }
 IMG_SIZE = (960, 549)
-keep_points = [i for i in range(29)]
+keep_points = list(range(29))
 keep_points.extend([40, 41, 42, 44, 45, 48, 51, 52, 55])
 
 
@@ -42,11 +44,49 @@ sets_transforms = {
 class CameraCreator:
     def __init__(self, pitch: Dict[str, np.ndarray],
                  img_size: Tuple[int, int] = (960, 540),
-                 max_refinement_dist: float = 100.0,
                  conf_thresh: float = 0.2,
                  algorithm: str = 'opencv_calibration',
                  lines_file: str | None = None,
                  **kwargs):
+        """Base class for camera calibration and all relevant heuristics
+            management.
+
+        Algorithms:
+            opencv_calibration - Perform cv2.calibrateCamera with all available
+                points on the pitch surface.
+            opencv_calibration_multiplane - Similar to opencv_calibration,
+                but it uses two additional planes with the goalposts.
+            voter - Select several points subsets and pick the most likely
+                camera model by assessing predicted camera model reprojection
+                error and plausibility of the predicted values.
+            original_voter - Perform camera calibration with selected points.
+                Refine camera parameters if possible or return the camera model
+                from homography if other algorithms do not work for the sample.
+            iterative_voter: Try 'original_voter' approach with
+                conf_thresh=0.5. If the result is not positive, iterate over
+                the confidence thresholds provided in conf_threshs until
+                parameters which generate the camera calibration values are
+                found.
+
+        Note: Any algorithm may return None if calibration is not possible.
+
+        Args:
+            pitch (Dict[str, np.ndarray]): Dict, which describes the pitch
+                model. Keys are points names, values are np.ndarray with 3
+                elements for 3D coordinates of the point.
+            img_size (Tuple[int, int], optional): Prediction image resolution
+                (W, H). Defaults to (960, 540).
+            conf_thresh (float, optional): Points prediction confidence
+                threshold. Should be in [0..1]. Defaults to 0.2.
+            algorithm (str, optional): One of available algorithms:
+                [opencv_calibration, opencv_calibration_multiplane,
+                voter, iterative_voter, original_voter]. Note: Same algoritms
+                requires additional parameters provided via kwargs. Defaults to
+                'opencv_calibration'.
+            lines_file (str | None, optional): Optional path to the lines
+                prediction file. Lines are ignored if None. Defaults to None.
+
+        """
         algorithms = {
             'opencv_calibration': self.opencv_calibration,
             'opencv_calibration_multiplane': self.opencv_calibration_multiplane,
@@ -61,7 +101,6 @@ class CameraCreator:
         self.conf_thresh = conf_thresh
         self.pitch = pitch
         self.img_size = img_size
-        self.max_refinement_dist = max_refinement_dist
         self.lines_data = {}
         if lines_file is not None:
             assert os.path.exists(lines_file), f'{lines_file} does not exist'
@@ -240,7 +279,7 @@ class CameraCreator:
         # camera_points = resolve_ambiguous_points(camera_points)
         print('Camera_points:', camera_points)
         hom_cam = None
-        hom_cam_rmse = 10000
+        hom_cam_rmse = 10000  # Just a big default value
         hom_cam_pred = get_camera_from_homography(camera_points)
         if hom_cam_pred is not None:
             hom_cam, hom_cam_rmse = hom_cam_pred
@@ -286,7 +325,7 @@ class CameraCreator:
                 print(f'Unable to select camera, best RMSE {min_cam[1]}'
                       f'for {min_cam[2]}')
         if cam is None and hom_cam is not None and hom_cam_rmse < self.max_rmse:
-            cam = hom_cam
+            cam = hom_cam  # Use the camera from homography as the last resort
             print('return hom_cam', name, hom_cam_rmse)
         return cam
 
@@ -393,7 +432,7 @@ class CameraCreator:
                 if len(camera_points) > self.min_points_for_refinement:
                     cam.refine_camera(matched_points)
         if cam is None and hom_cam is not None and hom_cam_rmse < 26:
-            cam = hom_cam
+            cam = hom_cam  # Use the camera from homography as the last resort
             print('return hom_cam', name)
         return cam
 
@@ -414,11 +453,11 @@ def resolve_ambiguous_points(camera_points: Dict[int, Tuple[float, float]],
             if n_left > n_right:
                 if pair[0] in selected_points:
                     del selected_points[pair[0]]
-                    print('deleted point', pair[0])
+                    print('Deleted point:', pair[0])
             else:
                 if pair[1] in selected_points:
                     del selected_points[pair[1]]
-                    print('deleted point', pair[1])
+                    print('Deleted point:', pair[1])
     return selected_points
 
 
@@ -428,6 +467,7 @@ def get_matched_points(camera_points):
 
 
 def good_camera(mtx, pos):
+    # Camera seems feasible if its focal length and position are reasonable
     focus = mtx[0, 0] >= 10 and mtx[0, 0] <= 20000
     pox_x = -250 < pos[0] < 250
     pos_y = -250 < pos[1] < 250
@@ -444,7 +484,19 @@ def is_good_camera(cam: Camera):
     return focus and pox_x and pos_y and pos_z
 
 
-def get_camera_from_homography(camera_points) -> Optional[Tuple[Camera, float]]:
+def get_camera_from_homography(camera_points)\
+        -> Optional[Tuple[Camera, float]]:
+    """Perform camera calibratrion based on homography.
+
+    Args:
+        camera_points(List[Tuple[float, float]]): Detected points list.
+
+    Returns:
+        Camera: Camera, initilized from homography. None - if calibration is
+            not posble.
+        float: RMSE of the model projections.
+
+    """
     cam_hom = Camera()
     world_p = []
     camera_p = []
@@ -469,6 +521,7 @@ def get_camera_from_homography(camera_points) -> Optional[Tuple[Camera, float]]:
 
 
 def get_camera_all_points(camera_points):
+    # General camera calibration with all the given points
     points_dict = {}
     world_points_sampled = []
     camera_points_sampled = []
@@ -510,6 +563,7 @@ def get_camera_reliable_points(camera_points):
 
 
 def get_camera_groundplane_points(camera_points):
+    # Calibrate camera with points on the groundplane only.
     camera_points_selected = {k: v for k, v in camera_points.items() if k in
                               point_sets['groundplane']}
     return get_camera_all_points(camera_points_selected)
@@ -517,6 +571,8 @@ def get_camera_groundplane_points(camera_points):
 
 def get_camera_accurate_points(camera_points, threshold: float = 10.0):
     # Select points, which are in aggreament with RANSAC initialized homography
+    # i.e. subsample points which can be predicted accurately by homography
+    # reprojection and then perform camera calibration with the points.
     camera_points_selected = {}
     world_p = []
     camera_p = []
@@ -587,6 +643,7 @@ def get_camera_gen(world_points_list, camera_points_list, matched_points,
 def line_eq_intersection(line1: Tuple[float, float],
                          line2: Tuple[float, float])\
         -> Optional[Tuple[float, float]]:
+    """Intersection point of two lines."""
     k1, b1 = line1
     k2, b2 = line2
     if abs(k1-k2) > 1e-4:
