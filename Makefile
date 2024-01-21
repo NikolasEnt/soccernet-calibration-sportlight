@@ -25,6 +25,7 @@ kill:
 
 run:
 	docker run --rm -it $(GPUS) \
+		-e DISPLAY=:0  \
 		$(NET) $(IPC) \
 		-v $(shell pwd):/workdir/ \
 		$(CONTAINER_NAME)\
