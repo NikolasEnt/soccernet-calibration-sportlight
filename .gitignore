@@ -1,0 +1,24 @@
+data
+!data/.gitkeep
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+**.coverage
+.vscode/
+.devcontainer/
+.mypy_cache/
+
+**/outputs/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# others
+.torch_debug/
+.Trash-0
+**.log
+**.csv
+*.png

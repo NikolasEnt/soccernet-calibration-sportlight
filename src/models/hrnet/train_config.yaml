@@ -1,0 +1,72 @@
+---
+defaults:
+  - _self_
+  - model_config/hrnet_w48@model.params.nn_module.hrnet_config
+
+metadata:
+  experiment_name: HRNet_57
+  run_name: hrnet48x2_57_masks_010
+  description: Add masks to loss when we are unable to create homography
+  experimenter: Nikolay
+  location: fractal
+data_params:
+  input_size: [960, 540]
+  num_keypoints: 57
+  batch_size: 8
+  num_workers: 8
+  pin_memory: true
+  margin: ${model.params.loss.sigma}  # Pixels beyond image border to consider keypoints
+  augmentations:
+    brightness: [0.8, 1.2]
+    color: [0.8, 1.2]
+    contrast: [0.8, 1.2]
+    gauss_noise_sigma: 30.0
+    prob: 0.5
+data:
+  train:
+    - /workdir/data/dataset/train
+  val:
+    - /workdir/data/dataset/valid
+model:
+  _target_: src.models.hrnet.metamodel.HRNetMetaModel
+  params:
+    device: cuda:0
+    nn_module:
+      num_refinement_stages: 0
+      num_heatmaps: ${model.params.nn_module.hrnet_config.num_classes}
+    loss:
+      num_refinement_stages: ${model.params.nn_module.num_refinement_stages}
+      stride: 2
+      sigma: 3.0
+      pred_size: [270, 480]
+      num_keypoints: ${data_params.num_keypoints}
+      l2_w: 1.0
+      kldiv_w: 0.001
+      awing_w: 0.0
+    optimizer:
+      lr: 0.0001
+    prediction_transform:
+      size: [540, 960]
+    amp: True
+    pretrain: null  # null or path to a pretrained model
+train_params:
+  load_compatible: true # Load only compatible weights from pretrain
+  max_epochs: 200
+  early_stopping_epochs: 32
+  reduce_lr_factor: 0.5
+  reduce_lr_patience: 8
+  monitor_metric: val_loss
+  monitor_metric_better: min
+  use_compile: false  # Compile PyTorch model for faster performance
+# Camera model is used for estimation of the final metrics during training
+camera:
+  _target_: src.models.hrnet.prediction.CameraCreator
+  pitch:
+    _target_: src.datatools.ellipse.get_pitch
+  conf_thresh: 0.5 # Min confidence to consider the point detected
+  algorithm: "opencv_calibration_multiplane"
+  min_points: 5
+  min_focal_length: 10.0
+  min_points_per_plane: 6
+  min_points_for_refinement: 7
+  reliable_thresh: 57
