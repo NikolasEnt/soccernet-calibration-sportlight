@@ -12,7 +12,7 @@ The solution was developed by Sportlight Technology team: [Nikolay Falaleev](htt
 
 * Linux computer with Nvidia GPU. The code was tested on OpenSUSE 15.5 and Ubuntu 22.04.
 * NVidia GPU with at least 24GB of memory. Nvidia RTX 3090 and RTX 4090 GPUs were used during the challenge. NVIDIA Driver v.>= 535.
-* [Docker](https://docs.docker.com/engine/install/) and [NVIDIA Container Toolkit](nvidia docker).
+* [Docker](https://docs.docker.com/engine/install/) and [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
 
 ## Quick start guide
@@ -48,10 +48,19 @@ In order to run the hyperparameter search with Optuna:
 The Line detection based model code is in [src/models/line/](src/models/line). 
 The model training is configured by Hydra config file 
 [src/models/line/train_config.yaml](src/models/hrnet/train_config.yaml). 
-Run `python src/models/line/train.py` to train the model in the docker 
-container environment.
+Run `python src/models/line/train.py` to train the model in the docker container environment.
 
 Details on the model architecture are in the model [README.md](/src/models/line/README.md).
+
+
+Once the model is trained, prediction file should be prepared as described in [README.md, section Assemble line model result](/src/models/line/README.md#assemble-line-model-result).
+
+## Final predictions and submit file creation
+
+The final step is the submit file preparation. It can be created by a provided script: `python src/utils/make_submit.py`.
+Update paths to acual model files in the accordingly. The file contains heuristics params used for the actual winning submission.
+
+In fact, actual calibration algorithms and relevant heuristics are implemented in [src/models/hrnet/prediction.py](src/models/hrnet/prediction.py).
 
 ## Useful links
 
