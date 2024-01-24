@@ -2,7 +2,6 @@ import os
 import warnings
 
 import hydra
-import mlflow
 from argus import load_model
 from torch import compile
 from omegaconf import OmegaConf, DictConfig
