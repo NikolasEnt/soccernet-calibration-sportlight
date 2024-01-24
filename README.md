@@ -1,23 +1,23 @@
 ## SoccerNet Camera Callibration 2023
 
+![An image and predictions visualization overlayed](readme_img/image_and_predictions.jpg)
+
 The repository contains the 1st place solution for SoccerNet Camera Calibration 2023, which was a part of CVPR 2023.
 
 The solution was developed by Sportlight Technology team: [Nikolay Falaleev](https://github.com/NikolasEnt) and [Ruilong Chen](https://github.com/ruilongml).
-
-![An image and predictions visualization overlayed](readme_img/image_and_predictions.jpg)
 
 Technical details of the approach are available in [Top-1 solution of SoccerNet Camera Calibration Challenge 2023](https://nikolasent.github.io/deeplearning/computervision/2023/06/20/SoccerNet-Camera-Calibration-2023.html). A brief video presentation of the solution is available on [YouTube](https://www.youtube.com/watch?v=bP72jfyecrw). The details on the challenge are available on the SoccerNet task [page](https://www.soccer-net.org/tasks/camera-calibration).
 
 Keypoints of the solution:
 
 * The raw pitch annotation is processed by geometry algorithms, resulting in more accurate and comprehensive annotations that include additional keypoints such as tangent points for ellipses (57 points in total).
-* The perseption system consists of two models: keypoints and lines detection.
+* The perception system consists of two models: keypoints and lines detection.
 * Heuristic rules are applied to the predictions to derive the most plausible camera calibration parameters.
 
 ## Prerequirements
 
 * Linux-powered computer with an Nvidia GPU. The code was tested on OpenSUSE 15.5 and Ubuntu 22.04.
-* NVidia GPU with at least 24GB of memory. Nvidia RTX 3090 and RTX 4090 GPUs were used during the challenge. NVIDIA Driver version >= 535.
+* Nvidia GPU with at least 24GB of memory. Nvidia RTX 3090 and RTX 4090 GPUs were used during the challenge. Nvidia Driver version >= 535.
 * [Docker](https://docs.docker.com/engine/install/) and [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
 
