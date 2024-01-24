@@ -68,6 +68,25 @@ Update paths to actual model files in the accordingly. The file contains heurist
 
 In fact, actual calibration algorithms and relevant heuristics are implemented in [src/models/hrnet/prediction.py](src/models/hrnet/prediction.py). The proposed code can indeed be adapted for use in other applications, related to camera calibration.
 
+## Code navigation
+
+Some key code files, which could be interesting to explore to grasp the fundamental concepts behind the solution, as well as the interesting aspects that may be adapted for other applications or techniques:
+
+* Pitch model is defined in [/src/datatools/ellipse.py](/src/datatools/ellipse.py), PITCH_POINTS dictionary.
+* Geometry algorithms:
+
+  * Ellipse tangent points and ellipse-line intersection points: [/src/datatools/ellipse.py](/src/datatools/ellipse.py)
+  * Lines intersections: [/src/datatools/intersections.py](/src/datatools/intersections.py)
+
+* Models:
+
+  * HRNet backbone: [/src/models/hrnet/hrnet.py](/src/models/hrnet/hrnet.py)
+  * Keypoints model: [/src/models/hrnet/model.py](/src/models/hrnet/model.py), loss function and efficient Pytorch-based 2D Gaussian heatmaps generation: [/src/models/hrnet/loss.py](/src/models/hrnet/loss.py)
+  * Lines model: [/src/models/line/model.py](/src/models/line/model.py)
+
+* Camera calibration algorithms: [src/models/hrnet/prediction.py](src/models/hrnet/prediction.py)
+
+
 ## Useful links
 
 * [https://github.com/SoccerNet/sn-calibration](https://github.com/SoccerNet/sn-calibration) Challenge discription and the baseline.
