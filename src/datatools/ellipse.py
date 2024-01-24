@@ -294,6 +294,18 @@ def find_tangent_point(ellipse: List[float], point: Tuple[float, float],
     """Find the tangent point for an ellipse for a line passing through a given
         point.
 
+    a*x**2+b*x*y + c*y**2 +d*x+e*y+f = 0  - the ellipse
+    (x0, y0) - an external point, the tangent line should pass through
+    y = m*x + n - the tangent line;
+    y = m*x + y0 - m*x0
+
+    Then factor x from the ellipse equation, and solve it for m,
+    using the fact that discriminant should be equal to 0 for tangent points.
+    There are potentially two roots from `get_m` function, so there are
+    two tangent points.
+    Having m, x0, y0, we can find x (`get_x` function) and y of the tangent
+    points.
+
     Args:
         ellipse (List[float]): Six coefficients of an ellipse.
         point (Tuple[float, float]): The point coordinates.
