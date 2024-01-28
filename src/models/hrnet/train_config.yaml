@@ -5,17 +5,16 @@ defaults:
 
 metadata:
   experiment_name: HRNet_57
-  run_name: hrnet48x2_57_masks_010
-  description: Add masks to loss when we are unable to create homography
+  run_name: hrnet48x2_57_003
+  description: Params of the best keypoints model training
   experimenter: Nikolay
-  location: fractal
 data_params:
   input_size: [960, 540]
   num_keypoints: 57
   batch_size: 8
   num_workers: 8
   pin_memory: true
-  margin: ${model.params.loss.sigma}  # Pixels beyond image border to consider keypoints
+  margin: ${model.params.loss.sigma}
   augmentations:
     brightness: [0.8, 1.2]
     color: [0.8, 1.2]
@@ -41,21 +40,21 @@ model:
       pred_size: [270, 480]
       num_keypoints: ${data_params.num_keypoints}
       l2_w: 1.0
-      kldiv_w: 0.001
+      kldiv_w: 0.0
       awing_w: 0.0
     optimizer:
       lr: 0.0001
     prediction_transform:
       size: [540, 960]
-    amp: True
-    pretrain: null  # null or path to a pretrained model
+    amp: True  # Use AMP for training
+    pretrain: null  # Pretrain model path or null
 train_params:
   load_compatible: true # Load only compatible weights from pretrain
   max_epochs: 200
   early_stopping_epochs: 32
   reduce_lr_factor: 0.5
   reduce_lr_patience: 8
-  monitor_metric: val_loss
+  monitor_metric: val_loss  # We monitor loss for ReduceLROnPlateau and EarlyStopping callbacks, but use the best model by val_evalai for predictions
   monitor_metric_better: min
   use_compile: false  # Compile PyTorch model for faster performance
 # Camera model is used for estimation of the final metrics during training
