@@ -1,5 +1,4 @@
 import os
-import warnings
 
 import hydra
 from argus import load_model
