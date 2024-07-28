@@ -21,7 +21,7 @@ point_sets = {
     'goal_right': [18, 19, 22, 23, 24, 25, 26, 27, 28, 29]
 
 }
-IMG_SIZE = (960, 549)
+IMG_SIZE = (960, 540)
 keep_points = list(range(29))
 keep_points.extend([40, 41, 42, 44, 45, 48, 51, 52, 55])
 
