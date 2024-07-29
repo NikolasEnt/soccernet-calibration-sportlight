@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "Solution for SoccerNet Camera Calibration Challenge 2023"
+message: "If you use this code, please cite it as below."
+authors:
+- family-names: Falaleev
+  given-names: Nikolay
+  email: nikolasent@gmail.com
+  orcid: "https://orcid.org/0000-0002-9398-5261"
+- family-names: Chen
+  given-names: Ruilong
+  email: ruilongcv@gmail.com
+  orcid: "https://orcid.org/0000-0002-7855-4711"
+version: 1.0.0
+doi: 10.5281/zenodo.13119663
+date-released: 2024-01-28
+url: "https://github.com/NikolasEnt/soccernet-calibration-sportlight"

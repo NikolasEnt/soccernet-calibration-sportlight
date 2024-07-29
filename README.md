@@ -2,6 +2,12 @@
 
 ![An image and predictions visualization overlayed](readme_img/image_and_predictions.jpg)
 
+<div align="center">
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13119663.svg)](https://doi.org/10.5281/zenodo.13119663)
+
+</div>
+
 The repository contains the 1st place solution for SoccerNet Camera Calibration 2023, which was a part of CVPR 2023.
 
 The solution was developed by Sportlight Technology team: [Nikolay Falaleev](https://github.com/NikolasEnt) and [Ruilong Chen](https://github.com/ruilongml).
