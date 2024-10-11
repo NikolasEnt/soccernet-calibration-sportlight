@@ -14,3 +14,20 @@ version: 1.0.0
 doi: 10.5281/zenodo.13119663
 date-released: 2024-01-28
 url: "https://github.com/NikolasEnt/soccernet-calibration-sportlight"
+preferred-citation:
+  type: proceedings
+  authors:
+  - family-names: Falaleev
+    given-names: Nikolay
+    email: nikolay.falaleev@sportlight.ai
+    orcid: "https://orcid.org/0000-0002-9398-5261"
+  - family-names: Chen
+    given-names: Ruilong
+    email: ruilong.chen@sportlight.ai
+    orcid: "https://orcid.org/0000-0002-7855-4711"
+  doi: "10.1145/3689061.3689074"
+  journal: "Proceedings of the 7th ACM International Workshop on Multimedia Content Analysis in Sports
+  start: 65
+  end: 73
+  title: "Enhancing Soccer Camera Calibration Through Keypoint Exploitation"
+  year: 2024
