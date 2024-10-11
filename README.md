@@ -3,8 +3,9 @@
 ![An image and predictions visualization overlayed](readme_img/image_and_predictions.jpg)
 
 <div align="center">
-
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13119663.svg)](https://doi.org/10.5281/zenodo.13119663)
+ 
+[![arXiv](https://img.shields.io/badge/arXiv-2410.07401-b31b1b.svg)](https://arxiv.org/abs/2410.07401)
+[![ACMMM 2024](https://img.shields.io/badge/ACMMM2024-10.1145/3689061.3689074-blue)](https://doi.org/10.1145/3689061.3689074)
 
 </div>
 
@@ -92,6 +93,23 @@ Some key code files, which could be interesting to explore to grasp the fundamen
 
 * Camera calibration algorithms: [src/models/hrnet/prediction.py](src/models/hrnet/prediction.py)
 
+## Cite
+If you use this work in your research, please cite our paper by using the following BibTeX entry:
+
+```latex
+@inproceedings{10.1145/3689061.3689074,
+author = {Falaleev, Nikolay S. and Chen, Ruilong},
+title = {Enhancing Soccer Camera Calibration Through Keypoint Exploitation},
+year = {2024},
+isbn = {9798400711985},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+doi = {10.1145/3689061.3689074},
+booktitle = {Proceedings of the 7th ACM International Workshop on Multimedia Content Analysis in Sports},
+pages = {65–73},
+series = {MMSports '24}
+}
+```
 
 ## Useful links
 
