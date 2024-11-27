@@ -15,7 +15,9 @@ The solution was developed by Sportlight Technology team: [Nikolay Falaleev](htt
 
 Technical details of the approach are available in [Top-1 solution of SoccerNet Camera Calibration Challenge 2023](https://nikolasent.github.io/deeplearning/computervision/2023/06/20/SoccerNet-Camera-Calibration-2023.html). A brief video presentation of the solution is available on [YouTube](https://www.youtube.com/watch?v=bP72jfyecrw). The details on the challenge are available on the SoccerNet task [page](https://www.soccer-net.org/tasks/camera-calibration).
 
-Keypoints of the solution:
+For a detailed video overview of the solution, please refer to our [YouTube video](https://www.youtube.com/watch?v=U7digrwlsv8), which was prepared as an illustration to [ACM MMSports'24](https://dl.acm.org/doi/10.1145/3689061.3689074) publication.
+
+Key features of the solution:
 
 * The raw pitch annotation is processed by geometry algorithms, resulting in more accurate and comprehensive annotations that include additional keypoints such as tangent points for ellipses (57 points in total).
 * The perception system consists of two models: keypoints and lines detection.
