@@ -13,7 +13,7 @@ The repository contains the 1st place solution for SoccerNet Camera Calibration 
 
 The solution was developed by Sportlight Technology team: [Nikolay Falaleev](https://github.com/NikolasEnt) and [Ruilong Chen](https://github.com/ruilongml).
 
-Technical details of the approach are available in [Top-1 solution of SoccerNet Camera Calibration Challenge 2023](https://nikolasent.github.io/deeplearning/computervision/2023/06/20/SoccerNet-Camera-Calibration-2023.html). A brief video presentation of the solution is available on [YouTube](https://www.youtube.com/watch?v=bP72jfyecrw). The details on the challenge are available on the SoccerNet task [page](https://www.soccer-net.org/tasks/camera-calibration).
+Technical details of the approach are available in [Top-1 solution of SoccerNet Camera Calibration Challenge 2023](https://nikolasent.github.io/deeplearning/computervision/calibration/competitions/2023/06/20/SoccerNet-Camera-Calibration-2023.html). A brief video presentation of the solution is available on [YouTube](https://www.youtube.com/watch?v=bP72jfyecrw). The details on the challenge are available on the SoccerNet task [page](https://www.soccer-net.org/tasks/camera-calibration).
 
 For a detailed video overview of the solution, please refer to our [YouTube video](https://www.youtube.com/watch?v=U7digrwlsv8), which was prepared as an illustration to [ACM MMSports'24](https://dl.acm.org/doi/10.1145/3689061.3689074) publication.
 
